@@ -1,0 +1,9 @@
+/* body {
+  visibility: hidden;
+}
+
+@media (min-width: 992px) {
+  body {
+    visibility: visible;
+  }
+}``` */

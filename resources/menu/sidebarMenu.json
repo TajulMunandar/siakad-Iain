@@ -1,0 +1,119 @@
+{
+  "menu": [
+    {
+      "parent": "data-master",
+      "child": [
+        {
+          "url": "dashboard/data-master/fakultas",
+          "name": "Data Fakultas",
+          "icon": "building-columns",
+          "slug": "data-master.fakultas"
+        },
+        {
+          "url": "dashboard/data-master/prodi",
+          "name": "Data Program Studi",
+          "icon": "book-open",
+          "slug": "data-master.prodi"
+        },
+        {
+          "url": "dashboard/data-master/kelas",
+          "name": "Data Kelas",
+          "icon": "screen-users",
+          "slug": "data-master.kelas"
+        },
+        {
+          "url": "dashboard/data-master/dosen",
+          "name": "Data Dosen",
+          "icon": "user-tie",
+          "slug": "data-master.dosen"
+        },
+        {
+          "url": "dashboard/data-master/mahasiswa",
+          "name": "Data Mahasiswa",
+          "icon": "user-group",
+          "slug": "data-master.mahasiswa"
+        },
+        {
+          "url": "dashboard/data-master/matakuliah",
+          "name": "Data Mata Kuliah",
+          "icon": "books",
+          "slug": "data-master.matakuliah"
+        },
+        {
+          "url": "dashboard/data-master/user",
+          "name": "Data User",
+          "icon": "user",
+          "slug": "data-master.user"
+        }
+      ]
+    },
+    {
+      "parent": "absensi",
+      "child": [
+        {
+          "url": "dashboard/absensi-ba/absensi",
+          "name": "Daftar Hadir",
+          "icon": "user-check",
+          "slug": "absensi.index"
+        },
+        {
+          "url": "dashboard/absensi-ba/berita-acara",
+          "name": "Berita Acara",
+          "icon": "file-lines",
+          "slug": "berita-acara.index"
+        },
+        {
+          "url": "dashboard/absensi-ba/rekap-absensi",
+          "name": "Rekap Daftar Hadir",
+          "icon": "calendar-check",
+          "slug": "rekap-absensi.index"
+        }
+      ]
+    },
+    {
+      "parent": "rps",
+      "child": [
+        {
+          "url": "dashboard/data-rps/rps",
+          "name": "Data RPS",
+          "icon": "calendar-lines-pen",
+          "slug": "rps.data-rps"
+        }
+      ]
+    },
+    {
+      "parent": "kontrak",
+      "child": [
+        {
+          "url": "dashboard/kontrak",
+          "name": "Data Kontrak",
+          "icon": "scroll",
+          "slug": "kontrak.data-kontrak"
+        }
+      ]
+    },
+    {
+      "parent": "skm",
+      "child": [
+        {
+          "url": "dashboard/data-survei/survei",
+          "name": "Data Survei",
+          "icon": "chart-mixed",
+          "slug": "survei.data-survei"
+        },
+        {
+          "url": "dashboard/data-survei/soal",
+          "name": "Data Soal",
+          "icon": "messages-question",
+          "slug": "survei.data-soal"
+        },
+        {
+          "url": "dashboard/data-survei/indikator",
+          "name": "Data Indikator",
+          "icon": "line-columns",
+          "slug": "survei.data-indikator"
+        }
+      ]
+    }
+  ]
+}

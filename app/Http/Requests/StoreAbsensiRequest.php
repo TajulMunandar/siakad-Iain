@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreAbsensiRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'id_kelas' => 'required|exists:kelas,id',
+            'id_dosen' => 'required',
+            'id_matakuliah' => 'required|exists:mata_kuliahs,id',
+            'hari' => 'required',
+            'nama_unit' => 'required',
+            'asisten' => 'required',
+            'tahun_akademik' => 'required',
+            'semester' => 'required',
+        ];
+    }
+}
