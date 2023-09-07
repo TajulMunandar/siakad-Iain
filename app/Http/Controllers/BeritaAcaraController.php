@@ -18,16 +18,17 @@ class BeritaAcaraController extends Controller
    */
   public function index()
   {
-    $beritas = BeritaAcara::all();
     $classes = Kelas::with('mahasiswa')->get();
-
     if (!auth()->user()->isAdmin) {
-      $dosen = Dosen::where('id_user', auth()->user()->id)->first();
-      $matakuliahs = MataKuliahDosen::where('id_dosen', $dosen->id)->get();
+      $beritas = BeritaAcara::where('id_dosen', auth()->user()->dosen->first()->id)->get();
+      $dosens = Dosen::where('id_user', auth()->user()->id)->first();
+      $matakuliahs = MataKuliahDosen::where('id_dosen', $dosens->id)->get();
     } else {
+      $dosens = Dosen::all();
+      $beritas = BeritaAcara::all();
       $matakuliahs = MataKuliahDosen::with('matakuliah')->get();
     }
-    return view('berita_acara.index', compact('beritas', 'classes', 'matakuliahs'));
+    return view('berita_acara.index', compact('beritas', 'classes', 'matakuliahs', 'dosens'));
   }
 
   /**

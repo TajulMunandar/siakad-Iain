@@ -23,6 +23,7 @@ class StoreBeritaAcaraRequest extends FormRequest
     {
       return [
         'id_kelas' => 'required|exists:kelas,id',
+        'id_dosen' => 'required|exists:dosens,id',
         'id_matakuliah' => 'required|exists:mata_kuliahs,id',
         'tahun_akademik' => 'required',
         'semester' => 'required',

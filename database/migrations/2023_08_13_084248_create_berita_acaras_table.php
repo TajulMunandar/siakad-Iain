@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('berita_acaras', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_kelas')->constrained('kelas')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('id_dosen')->constrained('dosens')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('id_matakuliah')->constrained('mata_kuliahs')->onDelete('restrict')->onUpdate('cascade');
             $table->string('tahun_akademik');
             $table->enum('semester', ['GANJIL', 'GENAP']);

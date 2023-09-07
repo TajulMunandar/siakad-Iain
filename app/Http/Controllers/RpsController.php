@@ -108,7 +108,7 @@ class RpsController extends Controller
 
     Rps::where('id', $rp->id)->update($validatedData);
     $rps = Rps::find($rp->id);
-    return redirect()->route('cpl.index', ['id' => $rps->id])->with('success', 'Rencana Perkuliahan Semester baru berhasil dibuat!');
+    return redirect()->route('cpl.show', ['rps' => $rps->id])->with('success', 'Rencana Perkuliahan Semester baru berhasil dibuat!');
   }
 
   /**

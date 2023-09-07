@@ -62,16 +62,17 @@
                                     <td>{{ $rps->semester }}</td>
                                     <td>{{ $rps->tahun_ajaran }}</td>
                                     <td>
+                                        <button id="delete-button" class="btn btn-success"
+                                            onclick="window.open('{{ route('rps.pdf', ['id' => $rps->id]) }}', '_blank')">
+                                            <i class="fa-solid fa-print"></i>
+                                        </button>
+                                        <button id="edit-button" class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#editModal{{ $loop->iteration }}">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
                                         <button id="delete-button" class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#deleteModal{{ $loop->iteration }}">
                                             <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                        {{-- <button id="edit-button" class="btn btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#editModal{{ $loop->iteration }}">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button> --}}
-                                        <button id="delete-button" class="btn btn-success" onclick="window.open('{{ route('rps.pdf', ['id' => $rps->id]) }}', '_blank')">
-                                            <i class="fa-solid fa-print"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -108,7 +109,7 @@
                                 {{--  MODAL DELETE  --}}
 
                                 {{-- Modal Edit --}}
-                                {{-- <div class="modal fade" id="editModal{{ $loop->iteration }}" tabindex="-1"
+                                <div class="modal fade" id="editModal{{ $loop->iteration }}" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
@@ -240,7 +241,7 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="tahun" class="form-label">Tahun Ajaran</label>
-                                                        <input type="number"
+                                                        <input type="name"
                                                             class="form-control @error('tahun') is-invalid @enderror"
                                                             id="tahun" name="tahun_ajaran"
                                                             value="{{ old('tahun', $rps->tahun_ajaran) }}">
@@ -258,7 +259,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
                                 {{-- / Modal Edit --}}
                             @endforeach
                         </tbody>
@@ -381,7 +382,7 @@
                             <label for="tahun" class="form-label">Tahun Ajaran</label>
                             <input type="name" class="form-control @error('tahun') is-invalid @enderror"
                                 id="tahun" name="tahun_ajaran">
-                                <div id="emailHelp" class="form-text">Contoh Inputan "2022/2023"</div>
+                            <div id="emailHelp" class="form-text">Contoh Inputan "2022/2023"</div>
                             @error('tahun')
                                 <div class="invalid-feedback">
                                     {{ $message }}

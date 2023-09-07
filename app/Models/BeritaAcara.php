@@ -17,6 +17,11 @@ class BeritaAcara extends Model
         return $this->belongsTo(MataKuliah::class, 'id_matakuliah');
     }
 
+    public function dosen()
+    {
+      return $this->belongsTo(Dosen::class, 'id_dosen');
+    }
+
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'id_kelas');

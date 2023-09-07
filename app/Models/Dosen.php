@@ -30,6 +30,16 @@ class Dosen extends Model
         return $this->hasMany(Kontrak::class);
     }
 
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class);
+    }
+
+    public function beritaAcara()
+    {
+        return $this->hasMany(BeritaAcara::class);
+    }
+
     public function prodi()
     {
         return $this->hasOne(Prodi::class);

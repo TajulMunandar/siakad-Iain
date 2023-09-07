@@ -147,20 +147,32 @@
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="dosen" class="form-label">Dosen</label>
-                                                                <select
-                                                                    class="form-select @error('dosen') is-invalid @enderror"
-                                                                    name="id_dosen" id="dosen"
-                                                                    value="{{ old('id_dosen', $kontrak->id_dosen) }}">
-                                                                    @foreach ($dosens as $dosen)
-                                                                        @if (old('id_dosen', $kontrak->id_dosen) == $dosen->id)
-                                                                            <option value="{{ $dosen->id }}" selected>
-                                                                                {{ $dosen->name }}</option>
-                                                                        @else
-                                                                            <option value="{{ $dosen->id }}">
-                                                                                {{ $dosen->name }}</option>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </select>
+                                                                @if (auth()->user()->isAdmin == 1)
+                                                                    <select
+                                                                        class="form-select @error('dosen') is-invalid @enderror"
+                                                                        name="id_dosen" id="dosen"
+                                                                        value="{{ old('id_dosen', $kontrak->id_dosen) }}">
+                                                                        @foreach ($dosens as $dosen)
+                                                                            @if (old('id_dosen', $kontrak->id_dosen) == $dosen->id)
+                                                                                <option value="{{ $dosen->id }}"
+                                                                                    selected>
+                                                                                    {{ $dosen->name }}</option>
+                                                                            @else
+                                                                                <option value="{{ $dosen->id }}">
+                                                                                    {{ $dosen->name }}</option>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </select>
+                                                                @elseif (auth()->user()->isAdmin == 0)
+                                                                    <select
+                                                                        class="form-select @error('dosen') is-invalid @enderror"
+                                                                        name="id_dosen" id="dosen"
+                                                                        value="{{ old('id_dosen', $kontrak->id_dosen) }}">
+                                                                            <option value="{{ $dosens->id }}">
+                                                                                {{ $dosens->name }}</option>
+                                                                    </select>
+                                                                @endif
+
                                                                 @error('dosen')
                                                                     <div class="invalid-feedback">
                                                                         {{ $message }}
@@ -238,18 +250,23 @@
 
                                                         </div>
                                                         <div class="col">
-                                                          <div class="mb-3">
-                                                            <label for="semester" class="form-label">Semester</label>
-                                                            <select class="form-select" id="semester" name="semester">
-                                                                <option value="GANJIL" {{ $kontrak->semester == "GANJIL" ? 'selected' : '' }}>Ganjil</option>
-                                                                <option value="GENAP" {{ $kontrak->semester == "GENAP" ? 'selected' : '' }}>Genap</option>
-                                                            </select>
-                                                            @error('semester')
-                                                                <div class="invalid-feedback">
-                                                                    {{ $message }}
-                                                                </div>
-                                                            @enderror
-                                                        </div>
+                                                            <div class="mb-3">
+                                                                <label for="semester" class="form-label">Semester</label>
+                                                                <select class="form-select" id="semester"
+                                                                    name="semester">
+                                                                    <option value="GANJIL"
+                                                                        {{ $kontrak->semester == 'GANJIL' ? 'selected' : '' }}>
+                                                                        Ganjil</option>
+                                                                    <option value="GENAP"
+                                                                        {{ $kontrak->semester == 'GENAP' ? 'selected' : '' }}>
+                                                                        Genap</option>
+                                                                </select>
+                                                                @error('semester')
+                                                                    <div class="invalid-feedback">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
+                                                            </div>
                                                             <div class="mb-3">
                                                                 <label for="tahun" class="form-label">Tahun
                                                                     Akademik</label>
@@ -257,7 +274,8 @@
                                                                     class="form-control @error('tahun') is-invalid @enderror"
                                                                     id="tahun" name="tahun_akademik"
                                                                     value="{{ old('tahun', $kontrak->tahun_akademik) }}">
-                                                                    <div id="tahun_akademikHelp" class="form-text">Contoh: 2021/2022</div>
+                                                                <div id="tahun_akademikHelp" class="form-text">Contoh:
+                                                                    2021/2022</div>
                                                                 @error('tahun')
                                                                     <div class="invalid-feedback">
                                                                         {{ $message }}
@@ -465,14 +483,15 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                  <label for="tahun_akademik" class="form-label">Tahun Akademik</label>
-                                  <input type="text" class="form-control" id="tahun_akademik" name="tahun_akademik">
-                                  <div id="tahun_akademikHelp" class="form-text">Contoh: 2021/2022</div>
-                                  @error('tahun_akademik')
-                                    <div class="invalid-feedback">
-                                      {{ $message }}
-                                    </div>
-                                  @enderror
+                                    <label for="tahun_akademik" class="form-label">Tahun Akademik</label>
+                                    <input type="text" class="form-control" id="tahun_akademik"
+                                        name="tahun_akademik">
+                                    <div id="tahun_akademikHelp" class="form-text">Contoh: 2021/2022</div>
+                                    @error('tahun_akademik')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="uas" class="form-label">UAS</label>
