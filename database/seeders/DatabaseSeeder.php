@@ -25,36 +25,5 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        User::create([
-            'name' => 'Syah Sury',
-            'username' => 'syahsury',
-            'isAdmin' => 0,
-            'password' => Hash::make('password'),
-        ]);
-
-        User::create([
-            'name' => 'Tajul',
-            'username' => 'tajul',
-            'isAdmin' => 0,
-            'password' => Hash::make('password'),
-        ]);
-
-        User::create([
-            'name' => 'Andika',
-            'username' => 'andika',
-            'isAdmin' => 0,
-            'password' => Hash::make('password'),
-        ]);
-
-        $this->call([
-            FakultasSeeder::class,
-            DosenSeeder::class,
-            ProdiSeeder::class,
-            KelasSeeder::class,
-            MahasiswaSeeder::class,
-            MataKuliahSeeder::class,
-            MataKuliahDosenSeeder::class,
-            StatusAbsensiSeeder::class,
-        ]);
     }
 }

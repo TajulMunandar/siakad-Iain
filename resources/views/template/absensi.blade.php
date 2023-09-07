@@ -65,11 +65,11 @@
         <table style="width: 100%;">
           <tr>
             <td style="font-weight: 600;">Kode / SKS </td>
-            <td>: </td>
+            <td>: {{$matakuliahDosen->mataKuliah->sks}} </td>
           </tr>
           <tr>
             <td style="font-weight: 600;">Nama Mata Kuliah</td>
-            <td>: </td>
+            <td>: {{$matakuliahDosen->mataKuliah->name}} </td>
           </tr>
           <tr>
             <td style="font-weight: 600;">Hari / Jam </td>
@@ -89,7 +89,7 @@
           </tr>
           <tr>
             <td style="font-weight: 600;">Dosen </td>
-            <td>: </td>
+            <td>: {{$matakuliahDosen->dosen->name}}</td>
           </tr>
           <tr>
             <td style="font-weight: 600;">Asisten</td>
