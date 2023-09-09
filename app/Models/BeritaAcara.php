@@ -29,6 +29,6 @@ class BeritaAcara extends Model
 
     public function beritaAcaraDetail()
     {
-        return $this->hasMany(beritaAcaraDetail::class);
+        return $this->hasMany(beritaAcaraDetail::class, 'id_berita_acara', 'id');
     }
 }

@@ -67,6 +67,12 @@
           "name": "Rekap Daftar Hadir",
           "icon": "calendar-check",
           "slug": "rekap-absensi.index"
+        },
+        {
+          "url": "dashboard/absensi-ba/rekap-berita-acara",
+          "name": "Rekap Berita Acara",
+          "icon": "calendar-week",
+          "slug": "rekap-absensi.index"
         }
       ]
     },

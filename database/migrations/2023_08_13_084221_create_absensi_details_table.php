@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('id_mahasiswa')->constrained('mahasiswas')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('id_status')->constrained('status_absensis')->onDelete('restrict')->onUpdate('cascade');
             $table->string('keterangan')->nullable();
+            $table->boolean('status_absensi');
             $table->timestamps();
         });
     }

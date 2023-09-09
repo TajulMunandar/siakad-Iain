@@ -33,11 +33,11 @@
                 <th rowspan="2" class="align-middle text-center">No</th>
                 <th rowspan="2" class="align-middle text-center">NPM</th>
                 <th rowspan="2" class="align-middle text-center">Nama Mahasiswa/i</th>
-                <th colspan="16" class="text-center">Pertemuan dan Tanggal Pertemuan</th>
+                <th colspan="{{ $sks }}" class="text-center">Pertemuan dan Tanggal Pertemuan</th>
                 <th rowspan="2" class="align-middle text-center">Keterangan</th>
               </tr>
               <tr>
-                @for ($i = 1; $i <= 16; $i++)
+                @for ($i = 1; $i <= $sks; $i++)
                   <th>{{ $i }}</th>
                 @endfor
               </tr>

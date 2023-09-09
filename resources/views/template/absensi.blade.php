@@ -105,11 +105,11 @@
         <th rowspan="2">No</th>
         <th rowspan="2">NPM</th>
         <th rowspan="2">Nama Mahasiswa/i</th>
-        <th colspan="16">Pertemuan dan Tanggal Pertemuan</th>
+        <th colspan="{{ $sks }}">Pertemuan dan Tanggal Pertemuan</th>
         <th rowspan="2">Keterangan</th>
       </tr>
       <tr>
-        @for ($i = 1; $i <= 16; $i++)
+        @for ($i = 1; $i <= $sks; $i++)
           <th>{{ $i }}</th>
         @endfor
       </tr>
@@ -154,9 +154,9 @@
         @endphp
         Takengon, <span>{{ $formattedDate }}</span> <br>
         Dosen Pengampu<br><br><br><br>
-        {{ $absensi->dosen->name }}
+        {{ strtoupper($absensi->dosen->name) }}
         <hr style="border-width: 1px; border-color: black; border-style: solid;">
-        NIP.<br>
+        NIP/NK. {{ $absensi->dosen->nip }}<br>
       </div>
     </div>
   </div>

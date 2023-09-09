@@ -42,7 +42,7 @@ class Dosen extends Model
 
     public function prodi()
     {
-        return $this->hasOne(Prodi::class);
+        return $this->hasOne(Prodi::class, 'id_dosen');
     }
 
     public function survei()

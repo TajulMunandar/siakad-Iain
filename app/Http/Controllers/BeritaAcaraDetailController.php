@@ -36,10 +36,11 @@ class BeritaAcaraDetailController extends Controller
    */
   public function store(Request $request)
   {
+    dd($request);
     $validatedData = $request->validate([
       'id_berita_acara' => 'required',
       'tanggal' => 'required',
-      'pertemuan' => 'required|max:2',
+      'pertemuan' => 'required',
       'materi' => 'required',
       'jumlah_mahasiswa' => 'required|max:2',
       'bukti_pelaksanaan' => 'nullable'

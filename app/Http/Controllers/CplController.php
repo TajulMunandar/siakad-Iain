@@ -212,7 +212,6 @@ class CplController extends Controller
    */
   public function edit(Cpl $cpl)
   {
-
   }
 
   /**
@@ -220,14 +219,8 @@ class CplController extends Controller
    */
   public function update(Request $request)
   {
+    dd($request);
     try {
-      $validatedData = $request->validate([
-        'id_rps' => 'required',
-        'utama' => 'required',
-        'penelitian' => 'required',
-        'pengabdian' => 'required',
-      ]);
-
       $utamas = $request->input('utama');
       $penelitian = $request->input('penelitian');
       $pengabdian = $request->input('pengabdian');
@@ -247,13 +240,36 @@ class CplController extends Controller
       }
 
       for ($i = 0; $i < $maxArrayRef; $i++) {
-        DaftarReferensi::where('id_rps', $request->id_rps)->update([
-          'id_rps' => $validatedData['id_rps'],
-          'utama' => $utamas[$i] ?? "",
-          'penelitian' => $penelitian[$i] ?? "",
-          'pengabdian' => $pengabdian[$i] ?? "",
-        ]);
+        // Mencari entri dengan kriteria tertentu
+        $existingEntry = DaftarReferensi::where('id_rps', $request->id_rps)->first();
+
+        if ($existingEntry) {
+          // Jika entri sudah ada, lakukan update pada kolom yang sesuai
+          $existingEntry->update([
+            'utama' => $utamas[$i] ?? $existingEntry->utama,
+            'penelitian' => $penelitian[$i] ?? $existingEntry->penelitian,
+            'pengabdian' => $pengabdian[$i] ?? $existingEntry->pengabdian,
+          ]);
+        } else {
+          // Jika entri tidak ada, buat entri baru
+          DaftarReferensi::create([
+            'id_rps' => $request->id_rps,
+            'utama' => $utamas[$i] ?? "",
+            'penelitian' => $penelitian[$i] ?? "",
+            'pengabdian' => $pengabdian[$i] ?? "",
+          ]);
+        }
       }
+
+
+      // for ($i = 0; $i < $maxArrayRef; $i++) {
+      //   DaftarReferensi::where('id_rps', $request->id_rps)->update([
+      //     'id_rps' => $validatedData['id_rps'],
+      //     'utama' => $utamas[$i] ?? "",
+      //     'penelitian' => $penelitian[$i] ?? "",
+      //     'pengabdian' => $pengabdian[$i] ?? "",
+      //   ]);
+      // }
 
       $validatedData2 = $request->validate([
         'id_rps' => 'required',
@@ -285,6 +301,7 @@ class CplController extends Controller
           $maxArrayLength = $arrayLength; // Simpan panjangnya sebagai panjang terbanyak
         }
       }
+
       for ($i = 0; $i < $maxArrayLength; $i++) {
         Cpl::where('id_capaian', $capaian)->update([
           'id_capaian' => $capaian,

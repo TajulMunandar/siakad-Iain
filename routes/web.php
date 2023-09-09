@@ -23,6 +23,7 @@ use App\Http\Controllers\SurveiGuestController;
 use App\Http\Controllers\IndikatorSurveiController;
 use App\Http\Controllers\MataKuliahDosenController;
 use App\Http\Controllers\BeritaAcaraDetailController;
+use App\Http\Controllers\RekapBeritaAcaraController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,9 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
     Route::get('/rekap-absensi', [AbsensiController::class, 'showRekap'])->name('rekap-absensi.index');
     Route::get('/rekap-absensi/{absensi}', [AbsensiController::class,'showRekapPerKelas'])->name('rekap-absensi.show');
     Route::get('/rekap-absensi/{absensi}/generate-pdf', [AbsensiController::class,'generatePDF'])->name('rekap-absensi.pdf');
+
+    Route::resource('/rekap-berita-acara', RekapBeritaAcaraController::class);
+
 
     Route::resource('/berita-acara', BeritaAcaraController::class);
     Route::resource('/berita-acara-detail', BeritaAcaraDetailController::class);

@@ -78,20 +78,20 @@
                 </table>
             </div>
             <div style="width: 50%; float:right">
-              <table style="width: 100%;">
-                <tr>
-                    <td style="font-weight: 600;">Semester </td>
-                    <td>: {{ $beritaAcara->semester }}</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: 600;">Tahun Akademik </td>
-                    <td>: {{ $beritaAcara->tahun_akademik }}</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: 600;">Dosen Pengampu </td>
-                    <td>: {{ auth()->user()->name }}</td>
-                </tr>
-              </table>
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="font-weight: 600;">Semester </td>
+                        <td>: {{ $beritaAcara->semester }}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 600;">Tahun Akademik </td>
+                        <td>: {{ $beritaAcara->tahun_akademik }}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 600;">Dosen Pengampu </td>
+                        <td>: {{ auth()->user()->name }}</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
@@ -114,13 +114,13 @@
                 <tr>
                     <td>{{ $berita->created_at }}</td>
                     <td>{{ $berita->pertemuan }}</td>
-                    <td>{{ $tanggal}}</td>
+                    <td>{{ $tanggal }}</td>
                     <td>{{ $berita->materi }}</td>
                     <td>{{ $berita->jumlah_mahasiswa }}</td>
                     <td>
-                      <a href="{{ asset('storage/' . $berita->bukti_pelaksanaan) }}">
-                      Gambar
-                    </a>
+                        <a href="{{ asset('storage/' . $berita->bukti_pelaksanaan) }}">
+                            Gambar
+                        </a>
                     </td>
                 </tr>
             @endforeach
@@ -133,14 +133,27 @@
                 Ketua Prodi,
                 <br>
                 <br><br><br>
+                {{ strtoupper($beritaAcara->kelas->prodi->dosen->name) }}
                 <hr style="border-width: 1px; border-color: black; border-style: solid;">
-                No Hp:<br>
+                NIP/NK. {{ $beritaAcara->kelas->prodi->dosen->nip }}<br>
             </div>
             <div style="float: right;">
-                Takengon,<span style="width: 80px; display: inline-block;">...................</span> <br>
+                @php
+                    date_default_timezone_set('Asia/Jakarta');
+
+                    // Get the current day, month, and year
+                    $day = date('j');
+                    $month = date('F');
+                    $year = date('Y');
+
+                    // Create the formatted date string
+                    $formattedDate = $day . ' ' . $month . ' ' . $year;
+                @endphp
+                Takengon,<span style="width: 150px;"> {{ $formattedDate }}</span> <br>
                 Dosen Pengampu<br><br><br><br>
+                {{ strtoupper($beritaAcara->dosen->name) }}
                 <hr style="border-width: 1px; border-color: black; border-style: solid;">
-                NIP.<br>
+                NIP/NK. {{ $beritaAcara->dosen->nip }}<br>
             </div>
         </div>
     </div>

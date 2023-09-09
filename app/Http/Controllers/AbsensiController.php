@@ -23,10 +23,8 @@ class AbsensiController extends Controller
   {
     $dosens = Dosen::all();
     $classes = Kelas::with('mahasiswa')->get();
-
     if (!auth()->user()->isAdmin) {
       $absensis = Absensi::where('id_dosen', auth()->user()->id)->get();
-
       $dosen = Dosen::where('id_user', auth()->user()->id)->first();
       $matakuliahs = MataKuliahDosen::where('id_dosen', $dosen->id)->get();
     } else {
@@ -56,14 +54,17 @@ class AbsensiController extends Controller
 
     $class = Kelas::find($validatedData['id_kelas']);
     $matakuliah = MataKuliah::find($validatedData['id_matakuliah']);
+    $matakuliahDosen = $matakuliah->sks;
+    $sks = $matakuliahDosen * 8;
 
-    for ($i = 1; $i <= 16; $i++) {
+    for ($i = 1; $i <= $sks; $i++) {
       foreach ($class->mahasiswa as $mahasiswa) {
         AbsensiDetail::create([
           'pertemuan' => $i,
           'id_absensi' => Absensi::latest()->first()->id,
           'id_mahasiswa' => $mahasiswa->id,
-          'id_status' => 1,
+          'id_status' => 5,
+          'status_absensi' => 0,
         ]);
       }
     }
@@ -78,7 +79,7 @@ class AbsensiController extends Controller
   {
     $statusAbsensis = StatusAbsensi::all();
     $pertemuan = (int) $pertemuan;
-    if ($pertemuan > 16) {
+    if ($pertemuan > 64) {
       return redirect()->route('absensi.index')->with('failed', 'Tidak ada pertemuan ke-' . $pertemuan);
     }
 
@@ -108,6 +109,7 @@ class AbsensiController extends Controller
         ->update([
           'id_status' => $statusId,
           'keterangan' => $request->input('keterangan')[$mahasiswaId] ?? null,
+          'status_absensi' => 1
         ]);
     }
 
@@ -145,17 +147,21 @@ class AbsensiController extends Controller
 
   public function showRekapPerKelas(Absensi $absensi)
   {
+    $matakuliahDosen = $absensi->mataKuliah->sks;
+    $sks = $matakuliahDosen * 8;
     $idAbsensi = $absensi->id;
     $statusAbsensis = StatusAbsensi::all();
 
     $kelas = $absensi->kelas->name;
     $rekapAbsensi = $absensi->absensiDetail->groupBy('mahasiswa.npm');
 
-    return view('rekap-absensi.show')->with(compact('idAbsensi' ,'kelas', 'rekapAbsensi', 'statusAbsensis'));
+    return view('rekap-absensi.show')->with(compact('idAbsensi' ,'kelas', 'rekapAbsensi', 'statusAbsensis', 'sks'));
   }
 
   public function generatePDF(Absensi $absensi)
   {
+    $matakuliahDosen = $absensi->mataKuliah->sks;
+    $sks = $matakuliahDosen * 8;
     $idAbsensi = $absensi->id;
     $dosen = Dosen::where('id_user', auth()->user()->id)->first();
 
@@ -174,7 +180,7 @@ class AbsensiController extends Controller
     $pdf = new Dompdf();
 
     // return view('template.absensi', compact('absensi', 'matakuliahDosen', 'rekapAbsensi'));die;
-    $htmlContent = view('template.absensi', compact('absensi', 'matakuliahDosen', 'rekapAbsensi'))->render();
+    $htmlContent = view('template.absensi', compact('absensi', 'matakuliahDosen', 'rekapAbsensi', 'sks'))->render();
     $pdf->loadHtml($htmlContent);
     $pdf->setPaper('legal', 'landscape');
 

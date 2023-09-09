@@ -25,6 +25,9 @@ class StatusAbsensiSeeder extends Seeder
             [
                 'status' => 'Sakit',
             ],
+            [
+                'status' => '-',
+            ],
         ];
 
         foreach ($status as $key => $value) {

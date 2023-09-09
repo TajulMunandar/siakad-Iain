@@ -59,7 +59,10 @@ class BeritaAcaraController extends Controller
     $details = BeritaAcaraDetail::where('id_berita_acara', $berita_acara->id)->get();
     $detail = BeritaAcaraDetail::where('id_berita_acara', $berita_acara->id)->first();
 
-    return view('berita_acara.show')->with(compact('berita_acara', 'details', 'detail'));
+    $jumlahDetail = BeritaAcaraDetail::where('id_berita_acara', $berita_acara->id)->count();
+    $jumlah = $jumlahDetail + 1;
+
+    return view('berita_acara.show')->with(compact('berita_acara', 'details', 'detail', 'jumlah'));
   }
 
   /**
