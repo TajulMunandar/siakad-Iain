@@ -175,31 +175,38 @@ class CplController extends Controller
     $id = request('rps');
     $capaians = Capaian::where('id_rps', $id)->first();
     // cpl
+    $id_cpl = Cpl::whereNotNull('id')->where('id_capaian', $capaians->id)->get();
     $sikap_cpl = Cpl::whereNotNull('cpl_sikap')->where('id_capaian', $capaians->id)->get();
     $k_umum_cpl = Cpl::whereNotNull('cpl_k_umum')->where('id_capaian', $capaians->id)->get();
     $k_khusus_cpl = Cpl::whereNotNull('cpl_k_khusus')->where('id_capaian', $capaians->id)->get();
     $pengetahuan_cpl = Cpl::whereNotNull('cpl_pengetahuan')->where('id_capaian', $capaians->id)->get();
     // cpmk
+    $id_cpmk = Cpmk::whereNotNull('id')->where('id_capaian', $capaians->id)->get();
     $pengetahuan_cpmk = Cpmk::whereNotNull('cpmk_pengetahuan')->where('id_capaian', $capaians->id)->get();
     $k_umum_cpmk = Cpmk::whereNotNull('cpmk_k_umum')->where('id_capaian', $capaians->id)->get();
     $k_khusus_cpmk = Cpmk::whereNotNull('cpmk_k_khusus')->where('id_capaian', $capaians->id)->get();
     $sikap_cpmk = Cpmk::whereNotNull('cpmk_sikap')->where('id_capaian', $capaians->id)->get();
 
+    $daftarId = DaftarReferensi::whereNotNull('id')->where('id_rps', $id)->get();
     $daftarUtama = DaftarReferensi::whereNotNull('utama')->where('id_rps', $id)->get();
     $daftarPenelitian = DaftarReferensi::whereNotNull('penelitian')->where('id_rps', $id)->get();
     $daftarPengabdian = DaftarReferensi::whereNotNull('pengabdian')->where('id_rps', $id)->get();
+
     $pertemuans = CapaianPertemuan::where('id_rps', $id)->get();
     return view('rps.cpl.update')->with(compact(
       'id',
       'capaians',
+      'daftarId',
       'daftarUtama',
-      'pertemuans',
       'daftarPenelitian',
       'daftarPengabdian',
+      'pertemuans',
+      'id_cpl',
       'sikap_cpl',
       'k_umum_cpl',
       'k_khusus_cpl',
       'pengetahuan_cpl',
+      'id_cpmk',
       'pengetahuan_cpmk',
       'k_umum_cpmk',
       'k_khusus_cpmk',
@@ -219,11 +226,11 @@ class CplController extends Controller
    */
   public function update(Request $request)
   {
-    dd($request);
     try {
       $utamas = $request->input('utama');
       $penelitian = $request->input('penelitian');
       $pengabdian = $request->input('pengabdian');
+      $daftarId = $request->input('daftarId');
 
       $ArraysRef = [$utamas, $penelitian, $pengabdian];
 
@@ -241,7 +248,7 @@ class CplController extends Controller
 
       for ($i = 0; $i < $maxArrayRef; $i++) {
         // Mencari entri dengan kriteria tertentu
-        $existingEntry = DaftarReferensi::where('id_rps', $request->id_rps)->first();
+        $existingEntry = DaftarReferensi::where('id', $daftarId[$i])->first();
 
         if ($existingEntry) {
           // Jika entri sudah ada, lakukan update pada kolom yang sesuai
@@ -261,6 +268,7 @@ class CplController extends Controller
         }
       }
 
+      // dd($request);
 
       // for ($i = 0; $i < $maxArrayRef; $i++) {
       //   DaftarReferensi::where('id_rps', $request->id_rps)->update([
@@ -281,14 +289,13 @@ class CplController extends Controller
       ]);
 
       $capaian = Capaian::where('id_rps', $request->id_rps)->update($validatedData2);
-
       $sikaps = $request->input('cpl_sikap');
       $umum = $request->input('cpl_k_umum');
       $khusus = $request->input('cpl_k_khusus');
       $pengetahuan = $request->input('cpl_pengetahuan');
-
+      $ids = $request->input('cpl_id');
       // Buat array berisi semua empat array
-      $allArrays = [$sikaps, $umum, $khusus, $pengetahuan];
+      $allArrays = [$sikaps, $umum, $khusus, $pengetahuan, $ids];
 
       $maxArrayLength = 0; // Panjang array terbanyak
 
@@ -303,22 +310,23 @@ class CplController extends Controller
       }
 
       for ($i = 0; $i < $maxArrayLength; $i++) {
-        Cpl::where('id_capaian', $capaian)->update([
+        Cpl::where('id', $ids[$i])->update([
           'id_capaian' => $capaian,
           'cpl_sikap' => $sikaps[$i] ?? "",
           'cpl_k_umum' => $umum[$i] ?? "",
           'cpl_k_khusus' => $khusus[$i] ?? "",
           'cpl_pengetahuan' => $pengetahuan[$i] ?? "",
         ]);
-      }
+      }      
 
       $sikaps2 = $request->input('cpmk_sikap');
       $umum2 = $request->input('cpmk_k_umum');
       $khusus2 = $request->input('cpmk_k_khusus');
       $pengetahuan2 = $request->input('cpmk_pengetahuan');
+      $ids2 = $request->input('cpmk_id');
 
       // Buat array berisi semua empat array
-      $allArrays2 = [$sikaps2, $umum2, $khusus2, $pengetahuan2];
+      $allArrays2 = [$sikaps2, $umum2, $khusus2, $pengetahuan2, $ids2];
 
       $maxArrayLength2 = 0; // Panjang array terbanyak
 
@@ -333,7 +341,7 @@ class CplController extends Controller
       }
 
       for ($i = 0; $i < $maxArrayLength2; $i++) {
-        Cpmk::where('id_capaian', $capaian)->update([
+        Cpmk::where('id', $ids2[$i])->update([
           'id_capaian' => $capaian,
           'cpmk_sikap' => $sikaps2[$i] ?? "",
           'cpmk_k_umum' => $umum2[$i] ?? "",

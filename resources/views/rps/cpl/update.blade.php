@@ -40,11 +40,12 @@
                         <i class="fa-solid fa-floppy-disk me-2"></i>
                         Simpan Perubahan
                     </button>
-                    <input type="hidden" name="id_rps" value="{{ $capaians->id }}">
+                    <input type="hidden" name="id_rps" value="{{ $id }}">
                     <div class="card mt-3 col-sm-6 col-md-12">
                         <div class="card-body">
                             {{-- tables --}}
                             <p class="fw-bold">CPL</p>
+                            <input type="hidden" v-for="(item, index) in id_cpl" :key="index" name="cpl_id[]" v-model="id_cpl[index].id">
                             <label for="sikap" class="form-label">Sikap</label>
                             <div class="mb-3" v-for="(item, index) in sikap_cpl" :key="index">
                                 <div class="row">
@@ -151,6 +152,7 @@
                     <div class="card mt-3 col-sm-6 col-md-12">
                         <div class="card-body">
                             <p class="fw-bold">CPMK</p>
+                            <input type="hidden" v-for="(item, index) in id_cpmk" :key="index" name="cpmk_id[]" v-model="id_cpmk[index].id">
                             <label for="sikap" class="form-label">Sikap</label>
                             <div class="mb-3" v-for="(item, index) in sikap_cpmk" :key="index">
                                 <div class="row">
@@ -329,6 +331,7 @@
                     <div class="card mt-3 col-sm-6 col-md-12">
                         <div class="card-body">
                             <p class="fw-bold">Daftar Referensi</p>
+                            <input type="hidden" v-for="(item, index) in daftarId" :key="index" name="daftarId[]" v-model="daftarId[index].id">
                             <div class="mb-3">
                                 <label for="utama" class="form-label">Referensi Utama</label>
                                 <div class="row" v-for="(item, index) in daftarUtama" :key="index">
@@ -407,14 +410,17 @@
         createApp({
             data() {
                 return {
+                  id_cpl: @json($id_cpl),
                   sikap_cpl: @json($sikap_cpl),
                   k_umum_cpl: @json($k_umum_cpl),
                   k_khusus_cpl: @json($k_khusus_cpl),
                   pengetahuan_cpl: @json($pengetahuan_cpl),
+                  id_cpmk: @json($id_cpmk),
                   sikap_cpmk: @json($sikap_cpmk),
                   k_umum_cpmk: @json($k_umum_cpmk),
                   k_khusus_cpmk: @json($k_khusus_cpmk),
                   pengetahuan_cpmk: @json($pengetahuan_cpmk),
+                  daftarId: @json($daftarId),
                   daftarUtama: @json($daftarUtama),
                   daftarPenelitian: @json($daftarPenelitian),
                   daftarPengabdian: @json($daftarPengabdian),
