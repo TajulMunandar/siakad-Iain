@@ -378,31 +378,37 @@ class CplController extends Controller
       $pengalaman = $request->input('pengalaman');
       $indikator = $request->input('indikator');
       $nilai = $request->input('nilai');
-      foreach ($sub_cpmks as $index4 => $sub_cpmk) {
-        if(isset($id_pertemuan[$index4])){
-          $capaianPertemuan = CapaianPertemuan::where('id', $id_pertemuan)->first();
+      for($i = 0 ; $i < count($id_pertemuan) ; $i++) {
+        if(isset($id_pertemuan[$i])){
+          $capaianPertemuan = CapaianPertemuan::where('id', $id_pertemuan[$i])->first();
           $capaianPertemuan->update([
-            'sub_cpmk' => $sub_cpmk ?? "",
-            'materi' => $materi[$index4] ?? "",
-            'metode' => $metode[$index4] ?? "",
-            'waktu' => $waktu[$index4] ?? "",
-            'pengalaman' => $pengalaman[$index4] ?? "",
-            'indikator' => $indikator[$index4] ?? "",
-            'nilai' => $nilai[$index4] ?? "",
+            'sub_cpmk' => $sub_cpmks[$i] ?? "",
+            'materi' => $materi[$i] ?? "",
+            'metode' => $metode[$i] ?? "",
+            'waktu' => $waktu[$i] ?? "",
+            'pengalaman' => $pengalaman[$i] ?? "",
+            'indikator' => $indikator[$i] ?? "",
+            'nilai' => $nilai[$i] ?? "",
           ]);
         }else{
           CapaianPertemuan::create([
             'id_rps' => $request->id_rps,
-            'sub_cpmk' => $sub_cpmk,
-            'materi' => $materi[$index4],
-            'metode' => $metode[$index4],
-            'waktu' => $waktu[$index4],
-            'pengalaman' => $pengalaman[$index4],
-            'indikator' => $indikator[$index4],
-            'nilai' => $nilai[$index4],
+            'sub_cpmk' => $sub_cpmks[$i],
+            'materi' => $materi[$i],
+            'metode' => $metode[$i],
+            'waktu' => $waktu[$i],
+            'pengalaman' => $pengalaman[$i],
+            'indikator' => $indikator[$i],
+            'nilai' => $nilai[$i],
           ]);
         }
       }
+
+      $deletePertemuanIds = explode(',', $request->input('deletedPertemuanIds'));
+      foreach($deletePertemuanIds as $delete){
+        CapaianPertemuan::destroy($delete);
+      }
+      
     } catch (\Illuminate\Validation\ValidationException $e) {
       return redirect()->route('cpl.index', ['id' => $request->id])->with('failed', $e->getMessage());
     }

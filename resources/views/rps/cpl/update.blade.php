@@ -268,6 +268,7 @@
                             <p class="fw-bold">Tabel Evaluasi</p>
                             <div class="row" v-for="(row, index) in pertemuans" :key="index">
                                 <input type="hidden" id="id" name="id_pertemuan[]" v-model="row.id">
+                                <input type="hidden" name="deletedPertemuanIds" :value="deletedPertemuanIds.join(',')">
                                 <div class="col">
                                     <div class="mb-3">
                                         <label :for="'sub_cpmk' + index" class="form-label">Sub - CPMK</label>
@@ -426,6 +427,7 @@
                   daftarPenelitian: @json($daftarPenelitian),
                   daftarPengabdian: @json($daftarPengabdian),
                   pertemuans: @json($pertemuans),
+                  deletedPertemuanIds: [],
                 }
             },
             methods: {
@@ -529,6 +531,8 @@
                     });
                 },
                 removeTabelRow(index) {
+                    const deletedPertemuanId = this.pertemuans[index].id; // Ambil ID pertemuan
+                    this.deletedPertemuanIds.push(deletedPertemuanId);
                     this.pertemuans.splice(index, 1);
                 },
             }
