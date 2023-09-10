@@ -228,6 +228,7 @@ class CplController extends Controller
   {
     try {
       $utamas = $request->input('utama');
+      
       $penelitian = $request->input('penelitian');
       $pengabdian = $request->input('pengabdian');
       $daftarId = $request->input('daftarId');
@@ -248,14 +249,14 @@ class CplController extends Controller
 
       for ($i = 0; $i < $maxArrayRef; $i++) {
         // Mencari entri dengan kriteria tertentu
-        $existingEntry = DaftarReferensi::where('id', $daftarId[$i])->first();
-
-        if ($existingEntry) {
+        
+        if (isset($daftarId[$i])) {
+          $existingEntry = DaftarReferensi::where('id', $daftarId[$i])->first();
           // Jika entri sudah ada, lakukan update pada kolom yang sesuai
           $existingEntry->update([
-            'utama' => $utamas[$i] ?? $existingEntry->utama,
-            'penelitian' => $penelitian[$i] ?? $existingEntry->penelitian,
-            'pengabdian' => $pengabdian[$i] ?? $existingEntry->pengabdian,
+            'utama' => $utamas[$i] ?? "",
+            'penelitian' => $penelitian[$i] ?? "",
+            'pengabdian' => $pengabdian[$i] ?? "",
           ]);
         } else {
           // Jika entri tidak ada, buat entri baru
@@ -267,8 +268,6 @@ class CplController extends Controller
           ]);
         }
       }
-
-      // dd($request);
 
       // for ($i = 0; $i < $maxArrayRef; $i++) {
       //   DaftarReferensi::where('id_rps', $request->id_rps)->update([
@@ -289,6 +288,7 @@ class CplController extends Controller
       ]);
 
       $capaian = Capaian::where('id_rps', $request->id_rps)->update($validatedData2);
+
       $sikaps = $request->input('cpl_sikap');
       $umum = $request->input('cpl_k_umum');
       $khusus = $request->input('cpl_k_khusus');
@@ -310,14 +310,24 @@ class CplController extends Controller
       }
 
       for ($i = 0; $i < $maxArrayLength; $i++) {
-        Cpl::where('id', $ids[$i])->update([
-          'id_capaian' => $capaian,
-          'cpl_sikap' => $sikaps[$i] ?? "",
-          'cpl_k_umum' => $umum[$i] ?? "",
-          'cpl_k_khusus' => $khusus[$i] ?? "",
-          'cpl_pengetahuan' => $pengetahuan[$i] ?? "",
-        ]);
-      }      
+        if(isset($ids[$i])){
+          $cpl = Cpl::where('id', $ids[$i])->first();
+          $cpl->update([
+            'cpl_sikap' => $sikaps[$i] ?? "",
+            'cpl_k_umum' => $umum[$i] ?? "",
+            'cpl_k_khusus' => $khusus[$i] ?? "",
+            'cpl_pengetahuan' => $pengetahuan[$i] ?? "",
+          ]);
+        }else{
+          Cpl::create([
+            'id_capaian' => $capaian,
+            'cpl_sikap' => $sikaps[$i] ?? "",
+            'cpl_k_umum' => $umum[$i] ?? "",
+            'cpl_k_khusus' => $khusus[$i] ?? "",
+            'cpl_pengetahuan' => $pengetahuan[$i] ?? "",
+          ]);
+        }
+      }
 
       $sikaps2 = $request->input('cpmk_sikap');
       $umum2 = $request->input('cpmk_k_umum');
@@ -341,15 +351,26 @@ class CplController extends Controller
       }
 
       for ($i = 0; $i < $maxArrayLength2; $i++) {
-        Cpmk::where('id', $ids2[$i])->update([
-          'id_capaian' => $capaian,
-          'cpmk_sikap' => $sikaps2[$i] ?? "",
-          'cpmk_k_umum' => $umum2[$i] ?? "",
-          'cpmk_k_khusus' => $khusus2[$i] ?? "",
-          'cpmk_pengetahuan' => $pengetahuan2[$i] ?? "",
-        ]);
+        if(isset($ids2[$i])){
+          $cpmk = Cpmk::where('id', $ids2[$i])->first();
+          $cpmk->update([
+            'cpmk_sikap' => $sikaps2[$i] ?? "",
+            'cpmk_k_umum' => $umum2[$i] ?? "",
+            'cpmk_k_khusus' => $khusus2[$i] ?? "",
+            'cpmk_pengetahuan' => $pengetahuan2[$i] ?? "",
+          ]);
+        }else{
+          Cpmk::create([
+            'id_capaian' => $capaian,
+            'cpmk_sikap' => $sikaps2[$i] ?? "",
+            'cpmk_k_umum' => $umum2[$i] ?? "",
+            'cpmk_k_khusus' => $khusus2[$i] ?? "",
+            'cpmk_pengetahuan' => $pengetahuan2[$i] ?? "",
+          ]);
+        }
       }
-
+      
+      $id_pertemuan = $request->input('id_pertemuan');
       $sub_cpmks = $request->input('sub_cpmk');
       $materi = $request->input('materi');
       $metode = $request->input('metode');
@@ -358,16 +379,29 @@ class CplController extends Controller
       $indikator = $request->input('indikator');
       $nilai = $request->input('nilai');
       foreach ($sub_cpmks as $index4 => $sub_cpmk) {
-        CapaianPertemuan::where('id_rps', $request->id_rps)->update([
-          'id_rps' => $request->id_rps,
-          'sub_cpmk' => $sub_cpmk,
-          'materi' => $materi[$index4],
-          'metode' => $metode[$index4],
-          'waktu' => $waktu[$index4],
-          'pengalaman' => $pengalaman[$index4],
-          'indikator' => $indikator[$index4],
-          'nilai' => $nilai[$index4],
-        ]);
+        if(isset($id_pertemuan[$index4])){
+          $capaianPertemuan = CapaianPertemuan::where('id', $id_pertemuan)->first();
+          $capaianPertemuan->update([
+            'sub_cpmk' => $sub_cpmk ?? "",
+            'materi' => $materi[$index4] ?? "",
+            'metode' => $metode[$index4] ?? "",
+            'waktu' => $waktu[$index4] ?? "",
+            'pengalaman' => $pengalaman[$index4] ?? "",
+            'indikator' => $indikator[$index4] ?? "",
+            'nilai' => $nilai[$index4] ?? "",
+          ]);
+        }else{
+          CapaianPertemuan::create([
+            'id_rps' => $request->id_rps,
+            'sub_cpmk' => $sub_cpmk,
+            'materi' => $materi[$index4],
+            'metode' => $metode[$index4],
+            'waktu' => $waktu[$index4],
+            'pengalaman' => $pengalaman[$index4],
+            'indikator' => $indikator[$index4],
+            'nilai' => $nilai[$index4],
+          ]);
+        }
       }
     } catch (\Illuminate\Validation\ValidationException $e) {
       return redirect()->route('cpl.index', ['id' => $request->id])->with('failed', $e->getMessage());

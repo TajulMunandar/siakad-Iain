@@ -267,6 +267,7 @@
 
                             <p class="fw-bold">Tabel Evaluasi</p>
                             <div class="row" v-for="(row, index) in pertemuans" :key="index">
+                                <input type="hidden" id="id" name="id_pertemuan[]" v-model="row.id">
                                 <div class="col">
                                     <div class="mb-3">
                                         <label :for="'sub_cpmk' + index" class="form-label">Sub - CPMK</label>
