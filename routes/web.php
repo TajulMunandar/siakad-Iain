@@ -106,8 +106,8 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
     Route::resource('/cpl', CplController::class)->parameters([
       'rps' => 'id',
   ]);
-  Route::get('/dashboard/data-rps/cpl/{rps}', [CplController::class, 'show'])->name('cpl.show');
-  });
+});
+Route::get('/dashboard/data-rps/cpl/{rps}', [CplController::class, 'show'])->name('cpl.show');
 });
 
 Route::middleware('auth')->group(function () {

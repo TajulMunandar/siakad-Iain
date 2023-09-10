@@ -147,15 +147,21 @@
                                                         <label for="dosen" class="form-label">Dosen</label>
                                                         <select class="form-select @error('dosen') is-invalid @enderror"
                                                             name="id_dosen" id="dosen">
-                                                            @foreach ($dosens as $dosen)
-                                                                @if (old('id_dosen', $rps->id_dosen) == $dosen->id)
-                                                                    <option value="{{ $dosen->id }}" selected>
-                                                                        {{ $dosen->name }}</option>
-                                                                @else
-                                                                    <option value="{{ $dosen->id }}">
-                                                                        {{ $dosen->name }}</option>
-                                                                @endif
-                                                            @endforeach
+                                                            @if (auth()->user()->isAdmin)
+                                                                @foreach ($dosens as $dosen)
+                                                                    @if (old('id_dosen', $rps->id_dosen) == $dosen->id)
+                                                                        <option value="{{ $dosen->id }}" selected>
+                                                                            {{ $dosen->name }}</option>
+                                                                    @else
+                                                                        <option value="{{ $dosen->id }}">
+                                                                            {{ $dosen->name }}</option>
+                                                                    @endif
+                                                                @endforeach
+                                                            @else
+                                                                <option value="{{ $dosens->id }}">
+                                                                    {{ $dosens->name }}</option>
+                                                            @endif
+
                                                         </select>
                                                         @error('dosen')
                                                             <div class="invalid-feedback">
@@ -282,7 +288,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="kelas" class="form-label">Kelas</label>
-                            <select class="form-select @error('kelas') is-invalid @enderror" name="id_kelas" id="kelas">
+                            <select class="form-select @error('kelas') is-invalid @enderror" name="id_kelas"
+                                id="kelas">
                                 @foreach ($kelases as $kelas)
                                     <option value="{{ $kelas->id }}" selected>
                                         {{ $kelas->name }}
@@ -297,7 +304,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="dosen" class="form-label">Dosen</label>
-                            <select class="form-select @error('dosen') is-invalid @enderror" name="id_dosen" id="dosen">
+                            <select class="form-select @error('dosen') is-invalid @enderror" name="id_dosen"
+                                id="dosen">
                                 @if (auth()->user()->isAdmin == 1)
                                     @foreach ($dosens as $dosen)
                                         <option value="{{ $dosen->id }}" selected>

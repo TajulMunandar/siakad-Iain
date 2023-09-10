@@ -54,12 +54,14 @@
                                 {{-- <a href="{{ route('absensi.show', $absensi->id) }}" class="btn btn-primary d-block">Masuk</a> --}}
                             </div>
                             {{-- Admin only --}}
-                            <div class="w-25">
-                                <button type="button" class="btn btn-outline-danger w-100" data-bs-toggle="modal"
-                                    data-bs-target="#hapusModal{{ $loop->iteration }}">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>
-                            </div>
+                            @if (auth()->user()->isAdmin == 1)
+                                <div class="w-25">
+                                    <button type="button" class="btn btn-outline-danger w-100" data-bs-toggle="modal"
+                                        data-bs-target="#hapusModal{{ $loop->iteration }}">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            @endif
                             {{-- Admin only --}}
                         </div>
                     </div>
@@ -168,9 +170,13 @@
         <div class="mb-3">
             <label for="id_dosen" class="form-label">Dosen</label>
             <select class="select2 form-select" id="id_dosen" name="id_dosen">
-                @foreach ($dosens as $dosen)
-                    <option value="{{ old('id_dosen', $dosen->id) }}">{{ $dosen->name }}</option>
-                @endforeach
+                @if (!auth()->user()->isAdmin)
+                    <option value="{{ old('id_dosen', $dosens->id) }}">{{ $dosens->name }}</option>
+                @else
+                    @foreach ($dosens as $dosen)
+                        <option value="{{ old('id_dosen', $dosen->id) }}">{{ $dosen->name }}</option>
+                    @endforeach
+                @endif
             </select>
             @error('id_dosen')
                 <div class="invalid-feedback">

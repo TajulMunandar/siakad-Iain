@@ -117,24 +117,35 @@
     </div>
 
     <div style="margin-top: 130px; padding: 0px 5px 0px 5px">
-        <div style="display:flex; justify-content:space-between; padding-right: 20px ">
-            <div style="float: left;">
-                Komisaris <span style="width: 80px; display: inline-block;"></span>
-                <br><br>
-                <br><br><br>
-                {{ $kontrak->kelas->mahasiswa->where('isKomisaris', 1)->first()->name }}
-                <hr style="border-width: 1px; border-color: black; border-style: solid;">
-                No Hp: {{ $kontrak->kelas->mahasiswa->where('isKomisaris', 1)->first()->nohp }}<br>
-            </div>
-            <div style="float: right;">
-                Takengon,<span style="width: 80px; display: inline-block;"></span> {{ $kontrak->created_at->format('Y') }}<br>
-                Dosen Pengampu<br><br><br><br>
-                {{ $kontrak->dosen->name }}
-                <hr style="border-width: 1px; border-color: black; border-style: solid;">
-                NIP.{{ $kontrak->dosen->nip }}<br>
-            </div>
-        </div>
-    </div>
+      <div style="display:flex; justify-content:space-between; padding-right: 20px ">
+          <div style="float: left;">
+              Komisaris <span style="width: 80px; display: inline-block;"></span>
+              <br><br>
+              <br><br><br>
+              {{ strtoupper($kontrak->kelas->mahasiswa->where('isKomisaris', 1)->first()->name) }}
+              <hr style="border-width: 1px; border-color: black; border-style: solid;">
+              NPM. {{ $kontrak->kelas->mahasiswa->where('isKomisaris', 1)->first()->npm }}<br>
+          </div>
+          <div style="float: right;">
+               @php
+                  date_default_timezone_set('Asia/Jakarta');
+
+                  // Get the current day, month, and year
+                  $day = date('j');
+                  $month = date('F');
+                  $year = date('Y');
+
+                  // Create the formatted date string
+                  $formattedDate = $day . ' ' . $month . ' ' . $year;
+              @endphp
+              Takengon,<span style="width: 150px;"></span> {{ $formattedDate }}<br>
+              Dosen Pengampu<br><br><br><br>
+              {{ strtoupper($kontrak->dosen->name) }}
+              <hr style="border-width: 1px; border-color: black; border-style: solid;">
+              NIP/NK.{{ $kontrak->dosen->nip }}<br>
+          </div>
+      </div>
+  </div>
 
 
 

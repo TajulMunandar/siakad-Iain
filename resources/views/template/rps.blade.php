@@ -257,11 +257,23 @@
             <div style="float: left;">
 
             </div>
+            @php
+                date_default_timezone_set('Asia/Jakarta');
+
+                // Get the current day, month, and year
+                $day = date('j');
+                $month = date('F');
+                $year = date('Y');
+
+                // Create the formatted date string
+                $formattedDate = $day . ' ' . $month . ' ' . $year;
+            @endphp
             <div style="float: right;">
-                Takengon,<span style="width: 80px; display: inline-block;"></span> <br>
+                Takengon,<span style="width: 150px;"> {{ $formattedDate }}</span> <br>
                 Dosen Pengampu<br><br><br><br>
+                {{ strtoupper($rpses->dosen->name) }}
                 <hr style="border-width: 1px; border-color: black; border-style: solid;">
-                NIP/NIK<br>
+                NIP/NK. {{ $rpses->dosen->nip }} <br>
             </div>
         </div>
     </div>
