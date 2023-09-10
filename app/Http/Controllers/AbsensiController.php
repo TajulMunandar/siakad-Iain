@@ -24,7 +24,7 @@ class AbsensiController extends Controller
     $dosens = Dosen::all();
     $classes = Kelas::with('mahasiswa')->get();
     if (!auth()->user()->isAdmin) {
-      $absensis = Absensi::where('id_dosen', auth()->user()->id)->get();
+      $absensis = Absensi::where('id_dosen', auth()->user()->dosen->first()->id)->get();
       $dosen = Dosen::where('id_user', auth()->user()->id)->first();
       $matakuliahs = MataKuliahDosen::where('id_dosen', $dosen->id)->get();
     } else {

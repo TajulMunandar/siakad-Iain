@@ -48,7 +48,7 @@
                             <input type="hidden" v-for="(item, index) in id_cpl" :key="index" name="cpl_id[]" v-model="id_cpl[index].id">
                             <label for="sikap" class="form-label">Sikap</label>
                             <div class="mb-3" v-for="(item, index) in sikap_cpl" :key="index">
-                                <div class="row">
+                                <div class="row" v-if="sikap_cpl[index].cpl_sikap !== ''">
                                     <div class="col-lg-11 d-flex">
                                         <span class="me-2"> @{{ index + 1 }}. </span>
                                         <input type="name" class="form-control @error('sikap') is-invalid @enderror"
@@ -69,7 +69,7 @@
                             </div>
                             <label for="k_umum" class="form-label">Keterampilan Umum</label>
                             <div class="mb-3" v-for="(item, index) in k_umum_cpl" :key="index">
-                                <div class="row">
+                                <div class="row" v-if="k_umum_cpl[index].cpl_k_umum !== ''">
                                     <div class="col-lg-11 d-flex">
                                         <span class="me-2"> @{{ index + 1 }}. </span>
                                         <input type="name" class="form-control @error('k_umum') is-invalid @enderror"
@@ -90,7 +90,7 @@
                             </div>
                             <label for="kusus" class="form-label">Keterampilan Khusus</label>
                             <div class="mb-3" v-for="(item, index) in k_khusus_cpl" :key="index">
-                                <div class="row">
+                                <div class="row" v-if="k_khusus_cpl[index].cpl_k_khusus !== ''">
                                     <div class="col-lg-11 d-flex">
                                         <span class="me-2"> @{{ index + 1 }}. </span>
                                         <input type="name" class="form-control @error('kusus') is-invalid @enderror"
@@ -111,7 +111,7 @@
                             </div>
                             <label for="pengetahuan" class="form-label">Pengetahuan</label>
                             <div class="mb-3" v-for="(item, index) in pengetahuan_cpl" :key="index">
-                                <div class="row">
+                                <div class="row" v-if="pengetahuan_cpl[index].cpl_pengetahuan !== ''">
                                     <div class="col-lg-11 d-flex">
                                         <span class="me-2"> @{{ index + 1 }}. </span>
                                         <input type="name"
@@ -155,7 +155,7 @@
                             <input type="hidden" v-for="(item, index) in id_cpmk" :key="index" name="cpmk_id[]" v-model="id_cpmk[index].id">
                             <label for="sikap" class="form-label">Sikap</label>
                             <div class="mb-3" v-for="(item, index) in sikap_cpmk" :key="index">
-                                <div class="row">
+                                <div class="row" v-if="sikap_cpmk[index].cpmk_sikap !== ''">
                                     <div class="col-lg-11 d-flex">
                                         <span class="me-2"> @{{ index + 1 }}. </span>
                                         <input type="name" class="form-control @error('sikap') is-invalid @enderror"
@@ -176,7 +176,7 @@
                             </div>
                             <label for="k_umum" class="form-label">Keterampilan Umum</label>
                             <div class="mb-3" v-for="(item, index) in k_umum_cpmk" :key="index">
-                                <div class="row">
+                                <div class="row" v-if="k_umum_cpmk[index].cpmk_k_umum !== ''">
                                     <div class="col-lg-11 d-flex">
                                         <span class="me-2"> @{{ index + 1 }}. </span>
                                         <input type="name" class="form-control @error('k_umum') is-invalid @enderror"
@@ -197,7 +197,7 @@
                             </div>
                             <label for="kusus" class="form-label">Keterampilan Khusus</label>
                             <div class="mb-3" v-for="(item, index) in k_khusus_cpmk" :key="index">
-                                <div class="row">
+                                <div class="row" v-if="k_khusus_cpmk[index].cpmk_k_khusus !== ''">
                                     <div class="col-lg-11 d-flex">
                                         <span class="me-2"> @{{ index + 1 }}. </span>
                                         <input type="name" class="form-control @error('kusus') is-invalid @enderror"
@@ -218,7 +218,7 @@
                             </div>
                             <label for="pengetahuan" class="form-label">Pengetahuan</label>
                             <div class="mb-3" v-for="(item, index) in pengetahuan_cpmk" :key="index">
-                                <div class="row">
+                                <div class="row" v-if="pengetahuan_cpmk[index].cpmk_pengetahuan !== ''">
                                     <div class="col-lg-11 d-flex">
                                         <span class="me-2"> @{{ index + 1 }}. </span>
                                         <input type="name"
@@ -333,10 +333,10 @@
                         <div class="card-body">
                             <p class="fw-bold">Daftar Referensi</p>
                             <input type="hidden" v-for="(item, index) in daftarId" :key="index" name="daftarId[]" v-model="daftarId[index].id">
-                            <div class="mb-3">
-                                <label for="utama" class="form-label">Referensi Utama</label>
-                                <div class="row" v-for="(item, index) in daftarUtama" :key="index">
-                                    <div class="col-11 d-flex">
+                            <label for="utama" class="form-label">Referensi Utama</label>
+                            <div class="mb-3" v-for="(item, index) in daftarUtama" :key="index">
+                                <div class="row" v-if="daftarUtama[index].utama !== ''">
+                                    <div class="col-11 d-flex" >
                                         <span class="me-2">@{{ index + 1 }}. </span>
                                         <input type="name" class="form-control mb-2" id="utama" name="utama[]"
                                           v-model="daftarUtama[index].utama">
@@ -353,9 +353,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="penelitian" class="form-label">Referensi dari Penelitian</label>
-                                <div class="row" v-for="(item, index) in daftarPenelitian" :key="index">
+                            <label for="penelitian" class="form-label">Referensi dari Penelitian</label>
+                            <div class="mb-3" v-for="(item, index) in daftarPenelitian" :key="index">
+                                <div class="row" v-if="daftarPenelitian[index].penelitian !== ''">
                                     <div class="col-11 d-flex">
                                         <span class="me-2">@{{ index + 1 }}. </span>
                                         <input type="name" class="form-control mb-2" id="penelitian"
@@ -373,10 +373,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="pengabdian" class="form-label">Referensi dari Pengabdian</label>
-                                <div class="row" v-for="(item, index) in daftarPengabdian" :key="index">
-                                    <div class="col d-flex">
+                            <label for="pengabdian" class="form-label">Referensi dari Pengabdian</label>
+                            <div class="mb-3" v-for="(item, index) in daftarPengabdian" :key="index">
+                                <div class="row" v-if="daftarPengabdian[index].pengabdian !== ''">
+                                    <div class="col d-flex" >
                                         <span class="me-2">@{{ index + 1 }}. </span>
                                         <input type="name" class="form-control mb-2" id="pengabdian"
                                             name="pengabdian[]" v-model="daftarPengabdian[index].pengabdian">
