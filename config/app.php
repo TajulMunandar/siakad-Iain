@@ -171,6 +171,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\NavigationServiceProvider::class,
 
+        Yajra\DataTables\DataTablesServiceProvider::class,
+
 
     ])->toArray(),
 

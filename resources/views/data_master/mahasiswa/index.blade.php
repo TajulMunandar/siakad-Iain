@@ -50,31 +50,6 @@
                         </thead>
                         <tbody>
                             @foreach ($mahasiswas as $mhs)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $mhs->npm }}</td>
-                                    <td>{{ $mhs->name }}</td>
-                                    <td>{{ $mhs->email }}</td>
-                                    <td>{{ $mhs->nohp }}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#foto{{ $loop->iteration }}">
-                                            Foto
-                                        </button>
-                                    </td>
-                                    <td>{{ $mhs->kelas->name }}</td>
-                                    <td>
-                                        <button id="edit-button" class="btn btn-warning" id="edit-button"
-                                            data-bs-toggle="modal" data-bs-target="#editModal{{ $loop->iteration }}">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                        <button id="delete-button" class="btn btn-danger" id="delete-button"
-                                            data-bs-toggle="modal" data-bs-target="#hapusModal{{ $loop->iteration }}">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-
                                 <!-- Modal Foto -->
                                 <div class="modal fade" id="foto{{ $loop->iteration }}" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -199,12 +174,17 @@
                                                         @enderror
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="isKomisaris" class="form-label">Penanggung Jawab</label>
+                                                        <label for="isKomisaris" class="form-label">Penanggung
+                                                            Jawab</label>
                                                         <select
                                                             class="form-select @error('isKomisaris') is-invalid @enderror"
                                                             name="isKomisaris" id="isKomisaris">
-                                                            <option value="1" {{ $mhs->isKomisaris == 1 ? 'selected' : '' }}>Komisaris</option>
-                                                            <option value="0" {{ $mhs->isKomisaris == 0 ? 'selected' : '' }}>Anggota</option>
+                                                            <option value="1"
+                                                                {{ $mhs->isKomisaris == 1 ? 'selected' : '' }}>Komisaris
+                                                            </option>
+                                                            <option value="0"
+                                                                {{ $mhs->isKomisaris == 0 ? 'selected' : '' }}>Anggota
+                                                            </option>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
@@ -356,6 +336,30 @@
     {{--  MODAL Add  --}}
 
 @section('addon-script')
-    <script src="{{ asset('js/datatables.js') }}"></script>
+     {{-- <script src="{{ asset('js/datatables.js') }}"></script> --}}
+    <script type="text/javascript">
+     $(function () {
+       var table = $('#myTable').DataTable({
+          processing:true,
+          serverSide:true,
+            ajax: '{{ route('mahasiswa.index') }}',
+            columns: [
+              {data: 'id', name: 'id'},
+              {data: 'npm', name: 'npm'},
+              {data: 'name', name: 'name'},
+              {data: 'email', name: 'email'},
+              {data: 'nohp', name: 'nohp'},
+              {data: 'foto', name: 'foto', orderable: false, searchable: false}, // Kolom 'foto'
+              {
+                data: 'kelas.name', // Menggunakan 'kelas.name' untuk mengakses kolom 'name' pada tabel 'kelas'
+                name: 'kelas.name',
+                orderable: false,
+                searchable: false
+              },
+              {data: 'action', name: 'action', orderable: false, searchable: false},
+            ]
+        });
+      });
+    </script>
 @endsection
 @endsection
