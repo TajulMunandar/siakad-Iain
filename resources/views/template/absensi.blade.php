@@ -51,7 +51,7 @@
         <td>
           <div style=" font-weight: 600; margin-left: 20px">
             DAFTAR HADIR PERKULIAHAN MAHASISWA/I<br>
-            FAKULTAS {{ strtoupper($absensi->kelas->prodi->fakultas->name) }} <br>
+            {{ strtoupper($absensi->kelas->prodi->fakultas->name) }} <br>
             INSTITUT AGAMA ISLAM NEGERI TAKENGON <br>
             SEMESTER {{ strtoupper($absensi->semester) }} TAHUN AKADEMIK {{ $absensi->tahun_akademik }}
           </div>

@@ -86,6 +86,9 @@ class BeritaAcaraController extends Controller
    */
   public function destroy(BeritaAcara $beritaAcara)
   {
-    //
+    BeritaAcaraDetail::where('id_berita_acara', $beritaAcara->id)->delete();
+    $beritaAcara->delete();
+
+    return redirect()->route('berita-acara.index')->with('success', 'Berita Acara berhasil dihapus');
   }
 }

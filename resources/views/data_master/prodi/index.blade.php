@@ -86,8 +86,9 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="kaprodi" class="form-label">Ketua Prodi</label>
-                                                        <select class="form-select @error('kaprodi') is-invalid @enderror"
-                                                            name="kaprodi" id="kaprodi">
+                                                        <select
+                                                            class="form-select  @error('kaprodi') is-invalid @enderror"
+                                                            name="kaprodi" id="select2-edit">
                                                             @foreach ($dosens as $dosen)
                                                                 @if (old('kaprodi', $prodi->kaprodi) == $dosen->id)
                                                                     <option value="{{ $dosen->id }}" selected>
@@ -103,7 +104,7 @@
                                                         <label for="id_fakultas" class="form-label">Fakultas</label>
                                                         <select
                                                             class="form-select @error('id_fakultas') is-invalid @enderror"
-                                                            name="id_fakultas" id="id_fakultas">
+                                                            name="id_fakultas" id="select2-edita">
                                                             @foreach ($fakultas as $fakulta)
                                                                 @if (old('id_fakultas', $prodi->id_fakultas) == $fakulta->id)
                                                                     <option value="{{ $fakulta->id }}" selected>
@@ -181,7 +182,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="kaprodi" class="form-label">Ketua Prodi</label>
-                            <select class="form-select @error('kaprodi') is-invalid @enderror" name="kaprodi"
+                            <select class="form-select select2 @error('kaprodi') is-invalid @enderror" name="kaprodi"
                                 id="kaprodi">
                                 @foreach ($dosens as $dosen)
                                     <option value="{{ $dosen->id }}" selected>
@@ -192,8 +193,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="id_fakultas" class="form-label">Fakultas</label>
-                            <select class="form-select @error('id_fakultas') is-invalid @enderror" name="id_fakultas"
-                                id="id_fakultas">
+                            <select class="form-select select2 @error('id_fakultas') is-invalid @enderror"
+                                name="id_fakultas" id="id_fakultas">
                                 @foreach ($fakultas as $fakulta)
                                     <option value="{{ $fakulta->id }}" selected>
                                         {{ $fakulta->name }}
@@ -213,6 +214,30 @@
     {{--  MODAL Add  --}}
 
 @section('addon-script')
+    <script>
+        $(document).ready(function() {
+            $(".select2").select2({
+                theme: 'bootstrap-5',
+                dropdownParent: $("#tambahModal")
+            });
+        });
+
+        $(document).ready(function() {
+            $("#select2-edit").select2({
+                theme: 'bootstrap-5',
+            });
+        });
+
+        $(document).ready(function() {
+            $("#select2-edita").select2({
+                theme: 'bootstrap-5',
+            });
+        });
+
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
+    </script>
     <script src="{{ asset('js/datatables.js') }}"></script>
 @endsection
 @endsection

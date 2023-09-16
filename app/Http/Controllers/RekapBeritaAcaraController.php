@@ -13,7 +13,12 @@ class RekapBeritaAcaraController extends Controller
      */
     public function index()
     {
-      $beritas = BeritaAcara::withCount('beritaAcaraDetail')->get();
+      if(auth()->user()->isAdmin){
+        $beritas = BeritaAcara::withCount('beritaAcaraDetail')->get();
+      }
+      else{
+        $beritas = BeritaAcara::where('id_dosen', auth()->user()->dosen->first()->id)->withCount('beritaAcaraDetail')->get();
+      }
       return view('rekap-ba.index')->with(compact('beritas'));
     }
 

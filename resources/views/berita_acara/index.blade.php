@@ -42,15 +42,42 @@
                         </p>
                         <p class="card-text mb-1">Matakuliah : {{ $berita->mataKuliah->name }}</p>
                         <p class="card-text">Dosen : {{ $berita->dosen->name }}</p>
-                        <a href="{{ route('berita-acara.show', $berita->id) }}"
-                            class="btn btn-primary d-block stretched-link">Masuk</a>
+
+                        <div class="d-flex gap-2">
+                            <div class="w-100">
+                                <a href="{{ route('berita-acara.show', $berita->id) }}"
+                                    class="btn btn-primary d-block">Masuk</a>
+                            </div>
+                            @if (auth()->user()->isAdmin == 1)
+                                <div class="w-25">
+                                    <button type="button" class="btn btn-outline-danger w-100" data-bs-toggle="modal"
+                                        data-bs-target="#hapusModal{{ $loop->iteration }}">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
+
+            {{-- Modal Delete --}}
+            <x-form_modal :id="'hapusModal' . $loop->iteration" title="Hapus Daftar Berita Acara" :route="route('berita-acara.destroy', $berita->id)" method='delete' btnTitle="Hapus"
+                primaryBtnStyle="btn-outline-danger" secBtnStyle="btn-secondary">
+                <p class="fs-6">Apakah anda yakin akan menghapus Berita Acara kelas <b>{{ $berita->kelas->name }}</b> ?
+                </p>
+                <div class="alert alert-warning fade show" role="alert">
+                    <i class="fa-duotone fa-triangle-exclamation me-2"></i>
+                    Semua Data Berita Acara akan terhapus!
+                </div>
+            </x-form_modal>
+            {{-- /Modal Delete --}}
         @empty
             <div class="text-center mt-5">Belum ada Daftar Berita Acara yang dibuat.</div>
         @endforelse
     </div>
+
+
 
     <x-form_modal id="createModal" title="Tambah Daftar Berita Acara" :route="route('berita-acara.store')">
         <div class="mb-3">

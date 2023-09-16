@@ -54,7 +54,7 @@
     <br>
     <div style=" font-weight: 600; margin-left: 20px; text-align: center">
         RENCANA PERKULIAHAN SEMESTER <br>
-        FAKULTAS {{ strtoupper($rpses->fakultas->name) }} <br>
+        {{ strtoupper($rpses->fakultas->name) }} <br>
         IAIN TAKENGON
     </div>
     <table class="table" style="width: 100%;  table-layout: fixed; margin-top: 30px; font-weight: 600">

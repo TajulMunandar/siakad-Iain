@@ -36,7 +36,7 @@
                                 <p class="hero-paragraph is-revealing">Sistem Informasi Layanan Akademik Online</p>
                                 <div class="hero-form newsletter-form field field-grouped is-revealing">
                                     <div class="control">
-                                        <a class="button button-primary button-block button-shadow" href="/login">Mulai</a>
+                                        <a class="button button-primary button-block button-shadow" href="/login">Login</a>
                                     </div>
                                 </div>
                                 <p class="hero-paragraph is-revealing mt-56" style="margin-top:200px">

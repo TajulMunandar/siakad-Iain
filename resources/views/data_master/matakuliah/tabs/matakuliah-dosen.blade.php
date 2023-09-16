@@ -99,7 +99,7 @@
         <select class="form-select" id="id_matakuliah" name="id_matakuliah">
             <option selected disabled>Pilih Mata Kuliah</option>
             @foreach ($matkuls as $matkul)
-                <option value="{{ $matkul->id }}">{{ $matkul->name }}</option>
+                <option value="{{ $matkul->id }}">{{ $matkul->name }}-{{ $matkul->kelas->name }}</option>
             @endforeach
         </select>
     </div>

@@ -36,7 +36,6 @@ class BeritaAcaraDetailController extends Controller
    */
   public function store(Request $request)
   {
-    dd($request);
     $validatedData = $request->validate([
       'id_berita_acara' => 'required',
       'tanggal' => 'required',
@@ -141,10 +140,8 @@ class BeritaAcaraDetailController extends Controller
 
   public function generatePDF($id)
   {
-    $berita = BeritaAcaraDetail::find($id);
-    $beritas = $berita->get();
-    $tanggal = Carbon::parse($berita->tanggal)->format('l, d-m-Y');
-    $beritaAcara = BeritaAcara::where('id', $berita->id_berita_acara)->first();
+    $beritaUtama = BeritaAcara::find($id);
+    $beritas = BeritaAcaraDetail::where('id_berita_acara', $beritaUtama->id)->get();
 
     $options = new Options();
     $options->set('isHtml5ParserEnabled', true);
@@ -152,7 +149,7 @@ class BeritaAcaraDetailController extends Controller
 
     $pdf = new Dompdf();
 
-    $htmlContent = view('template.berita-acara', compact('beritas', 'beritaAcara', 'tanggal'))->render();
+    $htmlContent = view('template.berita-acara', compact('beritas', 'beritaUtama'))->render();
     $pdf->loadHtml($htmlContent);
     $pdf->setPaper('legal', 'landscape');
 

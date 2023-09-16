@@ -51,7 +51,7 @@
                 <td>
                     <div style=" font-weight: 600; margin-left: 20px">
                         BERITA ACARA PERKULIAHAN <br>
-                        FAKULTAS {{ strtoupper($beritaAcara->Kelas->Prodi->Fakultas->name) }} <br>
+                        {{ strtoupper($beritaUtama->Kelas->Prodi->Fakultas->name) }} <br>
                         INSTITUT AGAMA ISLAM NEGERI TAKENGON <br>
                         ACEH TENGAH – ACEH
                     </div>
@@ -65,15 +65,15 @@
                 <table style="width: 100%;">
                     <tr>
                         <td style="font-weight: 600;">Program Studi </td>
-                        <td>: {{ $beritaAcara->Kelas->Prodi->name }}</td>
+                        <td>: {{ strtoupper($beritaUtama->Kelas->Prodi->name) }}</td>
                     </tr>
                     <tr>
                         <td style="font-weight: 600;">Mata Kuliah / SKS </td>
-                        <td>: {{ $beritaAcara->mataKuliah->name }}</td>
+                        <td>: {{ strtoupper($beritaUtama->mataKuliah->name) }}</td>
                     </tr>
                     <tr>
                         <td style="font-weight: 600;">Kelas </td>
-                        <td>: {{ $beritaAcara->Kelas->name }}</td>
+                        <td>: {{ strtoupper($beritaUtama->Kelas->name) }}</td>
                     </tr>
                 </table>
             </div>
@@ -81,15 +81,15 @@
                 <table style="width: 100%;">
                     <tr>
                         <td style="font-weight: 600;">Semester </td>
-                        <td>: {{ $beritaAcara->semester }}</td>
+                        <td>: {{ $beritaUtama->semester }}</td>
                     </tr>
                     <tr>
                         <td style="font-weight: 600;">Tahun Akademik </td>
-                        <td>: {{ $beritaAcara->tahun_akademik }}</td>
+                        <td>: {{ $beritaUtama->tahun_akademik }}</td>
                     </tr>
                     <tr>
                         <td style="font-weight: 600;">Dosen Pengampu </td>
-                        <td>: {{ auth()->user()->name }}</td>
+                        <td>: {{ strtoupper($beritaUtama->dosen->name) }}</td>
                     </tr>
                 </table>
             </div>
@@ -114,7 +114,7 @@
                 <tr>
                     <td>{{ $berita->created_at }}</td>
                     <td>{{ $berita->pertemuan }}</td>
-                    <td>{{ $tanggal }}</td>
+                    <td>{{ \Carbon\Carbon::parse($berita->tanggal)->format('l, d-m-Y') }}</td>
                     <td>{{ $berita->materi }}</td>
                     <td>{{ $berita->jumlah_mahasiswa }}</td>
                     <td>
@@ -133,9 +133,9 @@
                 Ketua Prodi,
                 <br>
                 <br><br><br>
-                {{ strtoupper($beritaAcara->kelas->prodi->dosen->name) }}
+                {{ strtoupper($beritaUtama->kelas->prodi->dosen->name) }}
                 <hr style="border-width: 1px; border-color: black; border-style: solid;">
-                NIP/NK. {{ $beritaAcara->kelas->prodi->dosen->nip }}<br>
+                NIP/NK. {{ $beritaUtama->kelas->prodi->dosen->nip }}<br>
             </div>
             <div style="float: right;">
                 @php
@@ -151,9 +151,9 @@
                 @endphp
                 Takengon,<span style="width: 150px;"> {{ $formattedDate }}</span> <br>
                 Dosen Pengampu<br><br><br><br>
-                {{ strtoupper($beritaAcara->dosen->name) }}
+                {{ strtoupper($beritaUtama->dosen->name) }}
                 <hr style="border-width: 1px; border-color: black; border-style: solid;">
-                NIP/NK. {{ $beritaAcara->dosen->nip }}<br>
+                NIP/NK. {{ $beritaUtama->dosen->nip }}<br>
             </div>
         </div>
     </div>
