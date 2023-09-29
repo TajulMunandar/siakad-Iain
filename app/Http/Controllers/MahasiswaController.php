@@ -17,11 +17,14 @@ class MahasiswaController extends Controller
   public function index(Request $request)
   {
     if ($request->ajax()) {
-      $data = Mahasiswa::with('kelas')->get();
+      $data = Mahasiswa::with('kelas')
+        ->orderBy('id', 'asc')
+        ->select('id', 'npm', 'name', 'email', 'nohp', 'isKomisaris', 'id_kelas')->get();
+
       return DataTables::of($data)
         ->addIndexColumn()
         ->addColumn('action', function ($row) {
-          $btn = '<button class="btn btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editModal' . $row->id . '"><i class="fa-solid fa-pen-to-square"></i></button>';
+          $btn = '<a class="btn btn-warning me-1" href="' . route('mahasiswa.edit', $row->id) . '"><i class="fa-solid fa-pen-to-square"></i></a>';
           $btn .= '<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapusModal' . $row->id . '"><i class="fa-solid fa-trash"></i></button>';
           return $btn;
         })
@@ -43,7 +46,9 @@ class MahasiswaController extends Controller
    */
   public function create()
   {
-    //
+    $mahasiswas = Mahasiswa::with('kelas')->get();
+    $kelas = Kelas::all();
+    return view('data_master.mahasiswa.tambah')->with(compact('mahasiswas', 'kelas'));
   }
 
   /**
@@ -90,7 +95,6 @@ class MahasiswaController extends Controller
    */
   public function show(Mahasiswa $mahasiswa)
   {
-    //
   }
 
   /**
@@ -98,7 +102,9 @@ class MahasiswaController extends Controller
    */
   public function edit(Mahasiswa $mahasiswa)
   {
-    //
+    $mahasiswas = Mahasiswa::with('kelas')->get();
+    $kelas = Kelas::all();
+    return view('data_master.mahasiswa.edit')->with(compact('mahasiswas', 'kelas', 'mahasiswa'));
   }
 
   /**

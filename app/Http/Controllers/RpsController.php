@@ -142,7 +142,7 @@ class RpsController extends Controller
   public function generatePDF($id)
   {
     $rps = Rps::find($id);
-    $rpses = $rps->first();
+    $rpses = $rps;
     $capaians = Capaian::where('id_rps', $rps->id)->first();
     $cpls = Cpl::where('id_capaian', $capaians->id)->get();
     $cpmks = Cpmk::where('id_capaian', $capaians->id)->get();

@@ -41,6 +41,7 @@
                                 </div>
                                 <p class="hero-paragraph is-revealing mt-56" style="margin-top:200px">
                                   This work is licensed under a <span style="font-size: 24px; font-weight: 600">LPM IAIN Takengon</span>
+                                  <img src="{{ asset('icons/lembaga.jpeg') }}" alt="">
                                 </p>
                             </div>
                         </div>

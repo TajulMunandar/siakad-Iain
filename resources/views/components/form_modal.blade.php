@@ -14,8 +14,8 @@
           {{ $slot }}
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn {{ $secBtnStyle ?? 'btn-outline-secondary' }}" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn {{ $primaryBtnStyle ?? 'btn-primary' }}">{{ $btnTitle ?? 'Simpan' }}</button>
+          <button type="button" class="btn {{ $btnSecondaryClass ?? 'btn-outline-secondary' }}" data-bs-dismiss="modal">{{ $btnSecondaryTitle ?? 'Batal' }}</button>
+          <button type="submit" class="btn {{ $btnPrimaryClass ?? 'btn-primary' }}">{{ $btnPrimaryTitle ?? 'Simpan' }}</button>
         </div>
       </form>
     </div>

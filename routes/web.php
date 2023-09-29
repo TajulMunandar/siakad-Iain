@@ -71,6 +71,7 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
     Route::resource('/matakuliah', MataKuliahController::class);
     Route::resource('/matakuliah-dosen', MataKuliahDosenController::class);
 
+
     Route::resource('/user', UserController::class);
     Route::post('/user/reset-password', [UserController::class, 'reset'])->name('user.reset');
   });
@@ -78,13 +79,12 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
   Route::prefix('/absensi-ba')->group(function () {
     Route::resource('/absensi', AbsensiController::class);
     Route::get('/absensi/{absensi}/{pertemuan}', [AbsensiController::class, 'show'])->name('absensi.show');
+    Route::post('/absensi/{absensi}/tambah-mahasiswa', [AbsensiController::class, 'storeMahasiswa'])->name('absensi.mahasiswa');
     Route::get('/rekap-absensi', [AbsensiController::class, 'showRekap'])->name('rekap-absensi.index');
     Route::get('/rekap-absensi/{absensi}', [AbsensiController::class,'showRekapPerKelas'])->name('rekap-absensi.show');
     Route::get('/rekap-absensi/{absensi}/generate-pdf', [AbsensiController::class,'generatePDF'])->name('rekap-absensi.pdf');
 
     Route::resource('/rekap-berita-acara', RekapBeritaAcaraController::class);
-
-
     Route::resource('/berita-acara', BeritaAcaraController::class);
     Route::resource('/berita-acara-detail', BeritaAcaraDetailController::class);
     Route::get('/berita-acara/{id}/generate-pdf',  [BeritaAcaraDetailController::class, 'generatePDF'])->name('berita.pdf');

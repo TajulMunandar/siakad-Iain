@@ -28,12 +28,28 @@
     </div>
 
     <div class="row">
-        <div class="col-12 mb-4">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-                <i class="fa-regular fa-plus me-2"></i>
-                Tambah Daftar Hadir
-            </button>
+        <div class="col-12 mb-4 d-flex">
+            <div class="col-8">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="fa-regular fa-plus me-2"></i>
+                    Tambah Daftar Hadir
+                </button>
+            </div>
+            <div class="col-4">
+                <form action="{{ route('absensi.index') }}" method="GET">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="search" placeholder="Cari Daftar Hadir"
+                            aria-label="Example text with two button addons">
+                        <button class="btn btn-secondary" type="submit">Cari</button>
+                        <a class="btn btn-secondary" type="button" href="{{ route('absensi.index') }}">Reset</a>
+                    </div>
+                </form>
+            </div>
         </div>
+
+        @if (isset($search))
+            <p>Hasil Pencarian untuk: <strong>{{ $search }}</strong></p>
+        @endif
 
 
         @forelse ($absensis as $absensi)
@@ -47,10 +63,14 @@
                         <p class="card-text">Matakuliah : {{ $absensi->mataKuliah->name }}</p>
                         <div class="d-flex gap-2">
                             <div class="w-100">
-                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-primary w-50" data-bs-toggle="modal"
                                     data-bs-target="#pilihPertemuan{{ $loop->iteration }}">
                                     Masuk
                                 </button>
+                                <a href="{{ route('absensi.edit', $absensi->id) }}" class="btn btn-primary w-25">
+                                    <i class="fa-regular fa-plus"></i>
+                                    <i class="fa-regular fa-user"></i>
+                                </a>
                                 {{-- <a href="{{ route('absensi.show', $absensi->id) }}" class="btn btn-primary d-block">Masuk</a> --}}
                             </div>
                             {{-- Admin only --}}
@@ -67,6 +87,8 @@
                     </div>
                 </div>
             </div>
+
+
 
             {{-- Modal Pilih Pertemuan --}}
             <div class="modal fade" id="pilihPertemuan{{ $loop->iteration }}" tabindex="-1"
@@ -125,9 +147,63 @@
                 </div>
             </x-form_modal>
             {{-- /Modal Delete --}}
+
+            {{-- Modal Tambah Mahasiswa --}}
+            <x-form_modal :id="'tambahMahasiswa' . $loop->iteration" title="Tambah Mahasiswa" :route="route('absensi.mahasiswa', $absensi->id)" btnTitle="Simpan"
+                primaryBtnStyle="btn-outline-primary" secBtnStyle="btn-secondary">
+                <div class="mb-3">
+                    <label for="id_mahasiswa" class="form-label">Mahasiswa</label>
+                    <select class="form-select select3" id="id_mahasiswa" name="id_mahasiswa">
+                        @foreach ($mahasiswas as $mahasiswa)
+                            <option value="{{ old('id_mahasiswa', $mahasiswa->id) }}">{{ $mahasiswa->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('id_mahasiswa')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </x-form_modal>
+            {{-- /Modal Tambah Mahasiswa --}}
         @empty
             <div class="text-center mt-5">Belum ada Daftar Hadir yang dibuat.</div>
         @endforelse
+        {{-- paginasi --}}
+        <div class="row my-4">
+            <div class="col-12">
+                <ul class="pagination justify-content-center">
+                    {{-- Previous Page Link --}}
+                    @if ($absensis->onFirstPage())
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    @else
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $absensis->previousPageUrl() }}" rel="prev">Previous</a>
+                        </li>
+                    @endif
+
+                    {{-- Pagination Elements --}}
+                    @for ($i = 1; $i <= $absensis->lastPage(); $i++)
+                        <li class="page-item {{ $i == $absensis->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $absensis->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+
+                    {{-- Next Page Link --}}
+                    @if ($absensis->hasMorePages())
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $absensis->nextPageUrl() }}" rel="next">Next</a>
+                        </li>
+                    @else
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+        </div>
     </div>
 
     <x-form_modal id="createModal" title="Tambah Daftar Hadir" :route="route('absensi.store')">
@@ -234,9 +310,19 @@
                 dropdownParent: $("#createModal")
             });
         });
-
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
+        });
+
+        $(".select3").select2({
+            theme: 'bootstrap-5',
+        }).on('select2:open', () => {
+            // Fokuskan elemen pencarian Select2 saat dropdown dibuka
+            $(".select3").select2('focus');
+        });
+
+        $(document).on('select2:open', () => {
+            document.querySelector('.select3-search__field').focus();
         });
     </script>
 @endsection

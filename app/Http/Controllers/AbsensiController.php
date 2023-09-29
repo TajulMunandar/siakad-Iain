@@ -13,26 +13,47 @@ use App\Models\StatusAbsensi;
 use App\Models\MataKuliahDosen;
 use App\Http\Requests\StoreAbsensiRequest;
 use App\Http\Requests\UpdateAbsensiRequest;
+use App\Models\Mahasiswa;
+use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
 {
   /**
    * Display a listing of the resource.
    */
-  public function index()
+  public function index(Request $request)
   {
+    $search = $request->input('search');
     $classes = Kelas::with('mahasiswa')->get();
+    $mahasiswas = Mahasiswa::with('kelas')->get();
+
     if (!auth()->user()->isAdmin) {
-      $absensis = Absensi::where('id_dosen', auth()->user()->dosen->first()->id)->get();
+      $absensis = Absensi::where('id_dosen', auth()->user()->dosen->first()->id)->WhereHas('matakuliah', function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%');
+      })->orWhereHas('kelas', function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%');
+      })->orWhereHas('dosen', function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%');
+      })
+        ->orderBy('created_at', 'desc')
+        ->paginate(9);
       $dosens = Dosen::where('id_user', auth()->user()->id)->first();
       $matakuliahs = MataKuliahDosen::where('id_dosen', $dosens->id)->get();
     } else {
       $dosens = Dosen::all();
-      $absensis = Absensi::all();
+      $absensis = Absensi::orWhereHas('matakuliah', function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%');
+      })->orWhereHas('kelas', function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%');
+      })->orWhereHas('dosen', function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%');
+      })
+        ->orderBy('created_at', 'desc')
+        ->paginate(9);
       $matakuliahs = MataKuliahDosen::with('matakuliah')->get();
     }
 
-    return view('absensi.index', compact('absensis', 'dosens', 'classes', 'matakuliahs'));
+    return view('absensi.index', compact('absensis', 'dosens', 'classes', 'matakuliahs', 'mahasiswas', 'search'));
   }
 
   /**
@@ -40,7 +61,6 @@ class AbsensiController extends Controller
    */
   public function create()
   {
-    //
   }
 
   /**
@@ -72,18 +92,49 @@ class AbsensiController extends Controller
     return redirect()->route('absensi.index')->with('success', 'Absensi berhasil ditambahkan');
   }
 
+  public function storeMahasiswa(Absensi $absensi, Request $request)
+  {
+    $validatedData = $request->validate([
+      'id_mahasiswa' => 'required',
+    ]);
+
+    $absensiDetail = AbsensiDetail::where('id_mahasiswa', $validatedData['id_mahasiswa'])
+      ->where('id_absensi', $absensi->id)
+      ->first();
+
+    $matakuliahDosen = $absensi->mataKuliah->sks;
+    $sks = $matakuliahDosen * 8;
+
+    if (!$absensiDetail) {
+      // Tambahkan mahasiswa ke absensi detail
+      for ($i = 1; $i <= $sks; $i++) {
+        AbsensiDetail::create([
+          'pertemuan' => $i, // Anda perlu membuat method getPertemuanSelanjutnya() di model Absensi
+          'id_absensi' => $absensi->id,
+          'id_mahasiswa' => $validatedData['id_mahasiswa'],
+          'id_status' => 5,
+          'status_absensi' => 0,
+        ]);
+      }
+
+      return redirect()->route('absensi.index')->with('success', 'Mahasiswa berhasil ditambahkan ke absensi');
+    }
+
+    return redirect()->back()->with('failed', 'Mahasiswa sudah ada di dalam absensi');
+  }
+
   /**
    * Display the specified resource.
    */
   public function show(Absensi $absensi, $pertemuan)
   {
+    $absensiDetail = AbsensiDetail::where('id_absensi', $absensi->id);
     $statusAbsensis = StatusAbsensi::all();
     $pertemuan = (int) $pertemuan;
     if ($pertemuan > 64) {
       return redirect()->route('absensi.index')->with('failed', 'Tidak ada pertemuan ke-' . $pertemuan);
     }
-
-    return view('absensi.show')->with(compact('absensi', 'statusAbsensis', 'pertemuan'));
+    return view('absensi.show')->with(compact('absensi', 'statusAbsensis', 'pertemuan', 'absensiDetail'));
   }
 
   /**
@@ -91,7 +142,8 @@ class AbsensiController extends Controller
    */
   public function edit(Absensi $absensi)
   {
-    //
+    $mahasiswas = Mahasiswa::with('kelas')->get();
+    return view('absensi.tambah', compact('absensi', 'mahasiswas'));
   }
 
   /**
@@ -154,7 +206,7 @@ class AbsensiController extends Controller
     $kelas = $absensi->kelas->name;
     $rekapAbsensi = $absensi->absensiDetail->groupBy('mahasiswa.npm');
 
-    return view('rekap-absensi.show')->with(compact('idAbsensi' ,'kelas', 'rekapAbsensi', 'statusAbsensis', 'sks'));
+    return view('rekap-absensi.show')->with(compact('idAbsensi', 'kelas', 'rekapAbsensi', 'statusAbsensis', 'sks'));
   }
 
   public function generatePDF(Absensi $absensi)
@@ -166,8 +218,8 @@ class AbsensiController extends Controller
 
     // $matakuliahDosen = MataKuliahDosen::where('id_dosen', $dosen->id)->all();
     $matakuliahDosen = MataKuliahDosen::where('id_matakuliah', $absensi->id_matakuliah)
-                                        ->where('id_dosen', $absensi->id_dosen)
-                                        ->get();
+      ->where('id_dosen', $absensi->id_dosen)
+      ->get();
 
     $matakuliahDosen = $matakuliahDosen->first();
     $rekapAbsensi = $absensi->absensiDetail->groupBy('mahasiswa.npm');

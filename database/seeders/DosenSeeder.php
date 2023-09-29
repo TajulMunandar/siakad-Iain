@@ -20,23 +20,8 @@ class DosenSeeder extends Seeder
             'name' => 'Syah Sury',
             'email' => 'syahsury@gmail.com',
             'nohp' => '081234567890',
-            'id_user' => 2,
+            'id_user' => 1,
         ]);
 
-        Dosen::create([
-            'nip' => '1234567891',
-            'name' => 'Tajul',
-            'email' => 'tajul@gmail.com',
-            'nohp' => '081234567891',
-            'id_user' => 3,
-        ]);
-
-        Dosen::create([
-            'nip' => '1234567892',
-            'name' => 'Andika',
-            'email' => 'andika@gmail.com',
-            'nohp' => '081234567892',
-            'id_user' => 4,
-        ]);
     }
 }
